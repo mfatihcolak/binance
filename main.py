@@ -705,6 +705,104 @@ def macdCrossOverStrategy():
                         print("İz süren stop aktifleşti")
                         izAktif = True
 
+def AlphaTrend():
+    izAktif = False
+    telegramBotSendText("Alpha Trend Stratejisi Seçildi", telegramId)
+
+    islemTipi = ""
+
+    while True:
+        bekle(5)
+        close = coin1.bilgiSelf()["close"]
+        low = coin1.bilgiSelf()["low"]
+        high = coin1.bilgiSelf()["high"]
+        volume = coin1.bilgiSelf()["volume"]
+        bekle(1)
+        islem = coin1.islem()
+        profit = islem["unRealizedProfit"][0]
+        bekle(1)
+        pnl = float(profit)
+        kontrol = islem["entryPrice"][0]
+        bekle(1)
+        if float(kontrol) <= 0:
+            coin1.emirIptal()
+            bekle(1)
+            izAktif = False
+            bekle(1)
+            if alphaTrend(close,low,high,volume) is True:
+                coin1.longAc()
+                islemTipi = "long"
+                bekle(1)
+                giris = coin1.islem()["entryPrice"][0]
+                bekle(1)
+                telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı", telegramId)
+                print(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı")
+            elif alphaTrend(close,low,high,volume) is False:
+                coin1.shortAc()
+                islemTipi = "short"
+                giris = coin1.islem()["entryPrice"][0]
+                bekle(1)
+                telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı", telegramId)
+                print(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı")
+        elif float(kontrol) > 0:
+            if islemTipi == "long":
+                if alphaTrend(close,low,high,volume) is False:
+                    coin1.kapat(islemTipi)
+                    islemTipi = "short"
+                    bekle(1)
+                    giris = coin1.islem()["entryPrice"][0]
+                    bekle(1)
+                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı",
+                                        telegramId)
+                    print(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı")
+                elif secim == "y":
+                    if pnl > kar:
+                        coin1.kapat(islemTipi)
+                        islemTipi = ""
+                        bekle(2)
+                        guncelbakiye = coin1.balance()["availableBalance"][6]
+                        telegramBotSendText(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
+                        print(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}")
+                    elif pnl < -stop:
+                        coin1.kapat(islemTipi)
+                        islemTipi = ""
+                        telegramBotSendText("Stop olundu ", telegramId)
+                        print("Stop olundu")
+                    elif pnl > tezdAktif and izAktif is False:
+                        coin1.tStopLoss(islemTipi)
+                        telegramBotSendText("İz Süren stop aktifleşti", telegramId)
+                        print("İz süren stop aktifleşti")
+                        izAktif = True
+            elif islemTipi == "short":
+                if alphaTrend(close,low,high,volume) is True:
+                    coin1.kapat(islemTipi)
+                    coin1.longAc()
+                    islemTipi = "long"
+                    bekle(1)
+                    giris = coin1.islem()["entryPrice"][0]
+                    bekle(1)
+                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı",
+                                        telegramId)
+                    print(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı")
+                elif secim == "y":
+                    if pnl > kar:
+                        coin1.kapat(islemTipi)
+                        islemTipi = ""
+                        bekle(1)
+                        guncelbakiye = coin1.balance()["availableBalance"][6]
+                        telegramBotSendText(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
+                        print(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}")
+                    elif pnl < -stop:
+                        coin1.kapat(islemTipi)
+                        islemTipi = ""
+                        telegramBotSendText("Stop olundu ", telegramId)
+                        print("Stop olundu")
+                    elif pnl > tezdAktif and izAktif is False:
+                        coin1.tStopLoss(islemTipi)
+                        telegramBotSendText("İz Süren stop aktifleşti", telegramId)
+                        print("İz süren stop aktifleşti")
+                        izAktif = True
+
 stratejiSecim = input(
     "Strateji Seç : \n 1-) EMA kesişimlerine göre işlem açar \n "
     "2-) SMA Kesişimlerine göre işlem açar \n "
@@ -712,7 +810,8 @@ stratejiSecim = input(
     "4-) SuperTrend Stratejisine Göre İşlem Açar \n "
     "5-) Macd Kesişimi ve RSI stratejisine göre işlem açar \n "
     "6-) Tillson T3 stratejisine göre işlem açar \n "
-    "7-) Macd Crossover stratejisine göre işlem açar \n ")
+    "7-) Macd Crossover stratejisine göre işlem açar \n "
+    "8-) AlphaTrend stratejisine göre işlem açar \n ")
 
 if stratejiSecim == "1":
     emaKesisim()
@@ -728,5 +827,7 @@ elif stratejiSecim == "6":
     tillson()
 elif stratejiSecim == "7":
     macdCrossOverStrategy()
+elif stratejiSecim == "8":
+    AlphaTrend()
 else:
     print("Strateji Seçmediniz")

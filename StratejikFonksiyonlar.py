@@ -1,5 +1,8 @@
 import time
-
+import pandas_ta
+import numpy
+import numpy as np
+import pandas as pd
 import talib
 import talib as ta
 import math
@@ -208,12 +211,95 @@ def macdCrossover(close):
     macd = fastMA - slowMA
     signal = talib.SMA(macd, signalLength)
     if signal[len(signal) - 2] >= macd[len(macd) - 2]:
-        if signal[len(signal)-1] < macd[len(macd)-1] - 0.0004:
+        if signal[len(signal)-1] < macd[len(macd)-1] - 0.0002:
             return True
     elif signal[len(signal)-2] <= macd[len(macd)-2]:
-        if signal[len(signal)-1] > macd[len(macd)-1] + 0.0004:
+        if signal[len(signal)-1] > macd[len(macd)-1] + 0.0002:
             return False
 
 
 
+def alphaTrenddeneme(close,low,high):
+    coeff = 1
+    AP = 14
+    #showsignalsk = True
+    novolumedata = False
+    TR = np.max(high[len(high) -1] - low[len(low) -1], numpy.abs(high[len(high)-1] - close[len(close) -1]), numpy.abs(low[len(low)-1] - close[len(close) - 1]))
+    ATR = talib.SMA(ta.TRANGE(high, low, close), AP)
+    upT = low - ATR * coeff
+    downT = high + ATR * coeff
+    hlc3 = (high + low + close) / 3
+    AlphaTrend = [0.0] #walrus operator
+    if AlphaTrend := (novolumedata if ta.RSI(close, 14) >= 50 else ta.MFI(hlc3, 14) >= 50) if (upT < np.isnan(AlphaTrend[len(AlphaTrend) - 1]) if np.isnan(AlphaTrend[len(AlphaTrend) - 1]) else upT) else (downT > np.isnan(AlphaTrend[len(AlphaTrend) - 1]) if np.isnan(AlphaTrend[len(AlphaTrend) - 1]) else downT):
+        return AlphaTrend
+    if AlphaTrend[len(AlphaTrend) - 2] > AlphaTrend[len(AlphaTrend) - 2] and AlphaTrend[len(AlphaTrend) - 1] < AlphaTrend[len(AlphaTrend) - 1]:
+        return True
+    else:
+        return False
+
+def alphaTrend(close,low,high,volume):
+    AP= 14
+    ATR = talib.SMA(ta.TRANGE(high, low, close), AP)
+    noVolumeData = False
+    coeff = 1
+    rsi = ta.RSI(close, 14)
+    upT = []
+    downT = []
+    AlphaTrend = [0.0]
+    hlc3 = pandas_ta.hlc3(high, low, close)
+    mfi = ta.MFI(high,low,close,volume, 14)
+    k1 = []
+    k2 = []
+    for i in range(len(low)):
+        if pd.isna(ATR[i]):
+            upT.append(0)
+        else:
+            upT.append(low[i] - (ATR[i] * coeff))
+    for i in range(len(high)):
+        if pd.isna(ATR[i]):
+            downT.append(0)
+        else:
+            downT.append(high[i] + (ATR[i] * coeff))
+    for i in range(1, len(close)):
+        if noVolumeData is True and rsi[i] >= 50:
+            if upT[i] < AlphaTrend[i-1]:
+                AlphaTrend.append(AlphaTrend[i-1])
+            else:
+                AlphaTrend.append(upT[i])
+        elif noVolumeData is False and mfi[i] >=50:
+            if upT[i] < AlphaTrend[i-1]:
+                AlphaTrend.append(AlphaTrend[i-1])
+            else:
+                AlphaTrend.append(upT[i])
+        else:
+            if downT[i] > AlphaTrend[i-1]:
+                AlphaTrend.append(AlphaTrend[i-1])
+            else:
+                AlphaTrend.append(downT[i])
+    for i in range(len(AlphaTrend)):
+        if i < 2:
+            k2.append(0)
+            k1.append(AlphaTrend[i])
+        else:
+            k2.append(AlphaTrend[i-2])
+            k1.append(AlphaTrend[i])
+    at = pd.DataFrame(data=k1, columns=["k1"])
+    at["k2"] = k2
+    if k1[len(k1)-2] <= k2[len(k2) -2] and k1[len(k1)-1] > k2[len(k2)-1]:
+        return True
+    elif k1[len(k1)-2] >= k2[len(k2) -2] and k1[len(k1)-1] < k2[len(k2)-1]:
+        return False
+
+
+def crossOver(a,b):
+    kisa = a[len(a) - 2]
+    simdikiKisa = a[len(a) - 1]
+
+    uzun = b[len(b) - 2]
+    simdikiUzun = b[len(b) - 1]
+
+    if kisa > uzun and simdikiKisa < simdikiUzun:
+        return True
+    else:
+        return False
 
