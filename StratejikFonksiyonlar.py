@@ -210,10 +210,10 @@ def macdCrossover(close):
     slowMA = talib.EMA(close, slowLength)
     macd = fastMA - slowMA
     signal = talib.SMA(macd, signalLength)
-    if signal[len(signal) - 2] >= macd[len(macd) - 2]:
+    if signal[len(signal) - 2] >= macd[len(macd) - 2] or signal[len(signal) - 2] >= macd[len(macd) - 2] - 0.0001:
         if signal[len(signal)-1] < macd[len(macd)-1] - 0.0002:
             return True
-    elif signal[len(signal)-2] <= macd[len(macd)-2]:
+    elif signal[len(signal)-2] <= macd[len(macd)-2] or signal[len(signal)-2] <= macd[len(macd)-2] + 0.0001:
         if signal[len(signal)-1] > macd[len(macd)-1] + 0.0002:
             return False
 
@@ -241,7 +241,7 @@ def alphaTrend(close,low,high,volume):
     AP= 14
     ATR = talib.SMA(ta.TRANGE(high, low, close), AP)
     noVolumeData = False
-    coeff = 1
+    coeff = 0.1
     rsi = ta.RSI(close, 14)
     upT = []
     downT = []

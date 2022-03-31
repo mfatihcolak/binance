@@ -662,7 +662,7 @@ def macdCrossOverStrategy():
                         coin1.kapat(islemTipi)
                         islemTipi = ""
                         bekle(2)
-                        guncelbakiye = coin1.balance()["availableBalance"][6]
+                        guncelbakiye = coin1.balance()["balance"][6]
                         telegramBotSendText(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
                         print(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}")
                     elif pnl < -stop:
@@ -691,7 +691,7 @@ def macdCrossOverStrategy():
                         coin1.kapat(islemTipi)
                         islemTipi = ""
                         bekle(1)
-                        guncelbakiye = coin1.balance()["availableBalance"][6]
+                        guncelbakiye = coin1.balance()["balance"][6]
                         telegramBotSendText(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
                         print(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}")
                     elif pnl < -stop:
@@ -735,15 +735,19 @@ def AlphaTrend():
                 bekle(1)
                 giris = coin1.islem()["entryPrice"][0]
                 bekle(1)
-                telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı", telegramId)
-                print(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı")
+                guncelbakiye = coin1.balance()["balance"][6]
+                bekle(1)
+                telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
+                print(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
             elif alphaTrend(close,low,high,volume) is False:
                 coin1.shortAc()
                 islemTipi = "short"
                 giris = coin1.islem()["entryPrice"][0]
                 bekle(1)
-                telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı", telegramId)
-                print(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı")
+                guncelbakiye = coin1.balance()["balance"][6]
+                bekle(1)
+                telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
+                print(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
         elif float(kontrol) > 0:
             if islemTipi == "long":
                 if alphaTrend(close,low,high,volume) is False:
@@ -752,15 +756,17 @@ def AlphaTrend():
                     bekle(1)
                     giris = coin1.islem()["entryPrice"][0]
                     bekle(1)
-                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı",
+                    guncelbakiye = coin1.balance()["balance"][6]
+                    bekle(1)
+                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}",
                                         telegramId)
-                    print(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı")
+                    print(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
                 elif secim == "y":
                     if pnl > kar:
                         coin1.kapat(islemTipi)
                         islemTipi = ""
                         bekle(2)
-                        guncelbakiye = coin1.balance()["availableBalance"][6]
+                        guncelbakiye = coin1.balance()["balance"][6]
                         telegramBotSendText(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
                         print(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}")
                     elif pnl < -stop:
@@ -781,15 +787,17 @@ def AlphaTrend():
                     bekle(1)
                     giris = coin1.islem()["entryPrice"][0]
                     bekle(1)
-                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı",
+                    guncelbakiye = coin1.balance()["balance"][6]
+                    bekle(1)
+                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}",
                                         telegramId)
-                    print(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı")
+                    print(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
                 elif secim == "y":
                     if pnl > kar:
                         coin1.kapat(islemTipi)
                         islemTipi = ""
                         bekle(1)
-                        guncelbakiye = coin1.balance()["availableBalance"][6]
+                        guncelbakiye = coin1.balance()["balance"][6]
                         telegramBotSendText(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
                         print(f"{kar} dolar kar alındı /// Güncel USDT Bakiyeniz = {guncelbakiye}")
                     elif pnl < -stop:
