@@ -240,7 +240,7 @@ def alphaTrenddeneme(close,low,high):
 def alphaTrend(close,low,high,volume):
     AP= 14
     ATR = talib.SMA(ta.TRANGE(high, low, close), AP)
-    noVolumeData = False
+    noVolumeData = True
     coeff = 0.1
     rsi = ta.RSI(close, 14)
     upT = []
