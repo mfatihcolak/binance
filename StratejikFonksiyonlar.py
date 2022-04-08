@@ -1,10 +1,10 @@
 import time
-import pandas_ta
+import pandas_ta as ta
 import numpy
 import numpy as np
 import pandas as pd
-import talib
-import talib as ta
+#import talib
+#import talib as ta
 import math
 
 def bekle(sn):
@@ -72,7 +72,7 @@ def mesafe(l, eleman):
 
 def generateSupertrend(close_array, high_array, low_array, atr_period, atr_multiplier):
 
-    atr = ta.ATR(high_array, low_array, close_array, atr_period)
+    atr = ta.atr(high_array, low_array, close_array, atr_period)
 
 
     previous_final_upperband = 0
@@ -164,17 +164,17 @@ def rsiAndMacd(rsi,macd,macdSignal):
 def T3TillsonIndicatorHesaplama(close_array, high_array, low_array, volume_factor, t3Length):
     ema_first_input = (high_array + low_array + 2 * close_array) / 4
 
-    e1 = ta.EMA(ema_first_input, t3Length)
+    e1 = ta.ema(ema_first_input, t3Length)
 
-    e2 = ta.EMA(e1, t3Length)
+    e2 = ta.ema(e1, t3Length)
 
-    e3 = ta.EMA(e2, t3Length)
+    e3 = ta.ema(e2, t3Length)
 
-    e4 = ta.EMA(e3, t3Length)
+    e4 = ta.ema(e3, t3Length)
 
-    e5 = ta.EMA(e4, t3Length)
+    e5 = ta.ema(e4, t3Length)
 
-    e6 = ta.EMA(e5, t3Length)
+    e6 = ta.ema(e5, t3Length)
 
     c1 = -1 * volume_factor * volume_factor * volume_factor
 
@@ -206,10 +206,10 @@ def macdCrossover(close):
     fastLength = 8
     slowLength = 16
     signalLength = 11
-    fastMA = talib.EMA(close, fastLength)
-    slowMA = talib.EMA(close, slowLength)
+    fastMA = ta.ema(close, fastLength)
+    slowMA = ta.ema(close, slowLength)
     macd = fastMA - slowMA
-    signal = talib.SMA(macd, signalLength)
+    signal = ta.sma(macd, signalLength)
     if (signal[len(signal) - 2] >= macd[len(macd) - 2] or signal[len(signal) - 2] >= macd[len(macd) - 2] - 0.01) and \
             (signal[len(signal)-1] < (macd[len(macd)-1] - 0.05)):
         return True
@@ -225,12 +225,12 @@ def alphaTrenddeneme(close,low,high):
     #showsignalsk = True
     novolumedata = False
     TR = np.max(high[len(high) -1] - low[len(low) -1], numpy.abs(high[len(high)-1] - close[len(close) -1]), numpy.abs(low[len(low)-1] - close[len(close) - 1]))
-    ATR = talib.SMA(ta.TRANGE(high, low, close), AP)
+    ATR = ta.sma(ta.true_range(high, low, close), AP)
     upT = low - ATR * coeff
     downT = high + ATR * coeff
     hlc3 = (high + low + close) / 3
     AlphaTrend = [0.0] #walrus operator
-    if AlphaTrend := (novolumedata if ta.RSI(close, 14) >= 50 else ta.MFI(hlc3, 14) >= 50) if (upT < np.isnan(AlphaTrend[len(AlphaTrend) - 1]) if np.isnan(AlphaTrend[len(AlphaTrend) - 1]) else upT) else (downT > np.isnan(AlphaTrend[len(AlphaTrend) - 1]) if np.isnan(AlphaTrend[len(AlphaTrend) - 1]) else downT):
+    if AlphaTrend := (novolumedata if ta.rsi(close, 14) >= 50 else ta.mfi(hlc3, 14) >= 50) if (upT < np.isnan(AlphaTrend[len(AlphaTrend) - 1]) if np.isnan(AlphaTrend[len(AlphaTrend) - 1]) else upT) else (downT > np.isnan(AlphaTrend[len(AlphaTrend) - 1]) if np.isnan(AlphaTrend[len(AlphaTrend) - 1]) else downT):
         return AlphaTrend
     if AlphaTrend[len(AlphaTrend) - 2] > AlphaTrend[len(AlphaTrend) - 2] and AlphaTrend[len(AlphaTrend) - 1] < AlphaTrend[len(AlphaTrend) - 1]:
         return True
@@ -239,15 +239,15 @@ def alphaTrenddeneme(close,low,high):
 
 def alphaTrend(close,low,high,volume):
     AP= 14
-    ATR = talib.SMA(ta.TRANGE(high, low, close), AP)
+    ATR = ta.sma(ta.true_range(high, low, close), AP)
     noVolumeData = True
     coeff = 0.1
-    rsi = ta.RSI(close, 14)
+    rsi = ta.rsi(close, 14)
     upT = []
     downT = []
     AlphaTrend = [0.0]
-    hlc3 = pandas_ta.hlc3(high, low, close)
-    mfi = ta.MFI(high,low,close,volume, 14)
+    hlc3 = ta.hlc3(high, low, close)
+    mfi = ta.mfi(high,low,close,volume, 14)
     k1 = []
     k2 = []
     for i in range(len(low)):
