@@ -637,15 +637,19 @@ def macdCrossOverStrategy():
                 bekle(1)
                 giris = coin1.islem()["entryPrice"][0]
                 bekle(1)
-                telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı", telegramId)
-                print(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı")
+                guncelbakiye = coin1.balance()["balance"][6]
+                bekle(1)
+                telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
+                print(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
             elif macdCrossover(close) is False:
                 coin1.shortAc()
                 islemTipi = "short"
                 giris = coin1.islem()["entryPrice"][0]
                 bekle(1)
-                telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı", telegramId)
-                print(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı")
+                guncelbakiye = coin1.balance()["balance"][6]
+                bekle(1)
+                telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
+                print(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
         elif float(kontrol) > 0:
             if islemTipi == "long":
                 if macdCrossover(close) is False:
@@ -654,9 +658,11 @@ def macdCrossOverStrategy():
                     bekle(1)
                     giris = coin1.islem()["entryPrice"][0]
                     bekle(1)
-                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı",
+                    guncelbakiye = coin1.balance()["balance"][6]
+                    bekle(1)
+                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}",
                                         telegramId)
-                    print(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı")
+                    print(f"{coin1.coin} {giris} fiyatından LONG işlem kapatılıp SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
                 elif secim == "y":
                     if pnl > kar:
                         coin1.kapat(islemTipi)
@@ -683,9 +689,11 @@ def macdCrossOverStrategy():
                     bekle(1)
                     giris = coin1.islem()["entryPrice"][0]
                     bekle(1)
-                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı",
+                    guncelbakiye = coin1.balance()["balance"][6]
+                    bekle(1)
+                    telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}",
                                         telegramId)
-                    print(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı")
+                    print(f"{coin1.coin} {giris} fiyatından SHORT işlem kapatılıp LONG açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
                 elif secim == "y":
                     if pnl > kar:
                         coin1.kapat(islemTipi)

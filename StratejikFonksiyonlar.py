@@ -210,12 +210,12 @@ def macdCrossover(close):
     slowMA = talib.EMA(close, slowLength)
     macd = fastMA - slowMA
     signal = talib.SMA(macd, signalLength)
-    if signal[len(signal) - 2] >= macd[len(macd) - 2] or signal[len(signal) - 2] >= macd[len(macd) - 2] - 0.0001:
-        if signal[len(signal)-1] < macd[len(macd)-1] - 0.0002:
-            return True
-    elif signal[len(signal)-2] <= macd[len(macd)-2] or signal[len(signal)-2] <= macd[len(macd)-2] + 0.0001:
-        if signal[len(signal)-1] > macd[len(macd)-1] + 0.0002:
-            return False
+    if (signal[len(signal) - 2] >= macd[len(macd) - 2] or signal[len(signal) - 2] >= macd[len(macd) - 2] - 0.01) and \
+            (signal[len(signal)-1] < (macd[len(macd)-1] - 0.05)):
+        return True
+    elif (signal[len(signal)-2] <= macd[len(macd)-2] or signal[len(signal)-2] <= macd[len(macd)-2] + 0.01) and \
+            (signal[len(signal)-1] > (macd[len(macd)-1] + 0.05)):
+        return False
 
 
 
