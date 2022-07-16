@@ -1,8 +1,8 @@
-secretkey= "P7WVkDXlVkHtOxUPQscLx93JP7KSGrqIdontslWkWl0MaTDIRU7qLnCPv9wm58hW"
-publickey = "lSgYpGsiL35Zdpdbe9NvkZrWNUPMPFbuRqklTR9TVfhyTT1HrV282gZmdTFPDtUG"
+secretkey= ""
+publickey = ""
 
-newSecretKey = "iCpCGbuw5wtPg3xnpyBA01khz6XvBI03CCWqcrDnXd0QwEg0oQz2NshaQtjoS5z1"
-newApiKey = "CnLNarMnazevhIWwWWbEFLdgo75xUln5KIT7GFQPBBjhJDesMbHixBm7rpTV262z"
+newSecretKey = ""
+newApiKey = ""
 
-telegramToken= "5277890297:AAGthoddwfdibH1ELNQMuMg7qasLVvoKtNg"
-telegramId = "908516722"
+telegramToken= ""
+telegramId = ""
