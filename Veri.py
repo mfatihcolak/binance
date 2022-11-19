@@ -9,7 +9,7 @@ BASE_URL = "https://fapi.binance.com"
 
 
 def fiyat(symbol, minute):
-    url = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}&interval={minute}&limit=200"
+    url = f"/fapi/v2/positionRisk?symbol={symbol}&interval={minute}&limit=200"
     payload = {}
     headers = {
         "Content-Type": "application/json"

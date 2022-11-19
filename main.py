@@ -430,8 +430,8 @@ def rsiVeMacd():
         profit = islem["unRealizedProfit"][0]
         bekle(1)
         pnl = float(profit)
-        macd, macdSignal, macdHist = ta.MACD(close,fastperiod=12, slowperiod=26, signalperiod=9)
-        rsi = ta.RSI(close,timeperiod=14)
+        macd, macdSignal, macdHist = ta.macd(close,fastperiod=12, slowperiod=26, signalperiod=9)
+        rsi = ta.rsi(close,timeperiod=14)
         kontrol = islem["entryPrice"][0]
         bekle(1)
 
@@ -747,6 +747,11 @@ def AlphaTrend():
                 bekle(1)
                 telegramBotSendText(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
                 print(f"{coin1.coin} {giris} fiyatından LONG işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
+                if karAl(pnlYuzdeHesaplama(kontrol,pnl)) is True:
+                    coin1.emirIptal()
+                elif eklemeYap(pnlYuzdeHesaplama(kontrol, pnl)) is True:
+                    coin1.longAc()
+
             elif alphaTrend(close,low,high,volume) is False:
                 coin1.shortAc()
                 islemTipi = "short"
@@ -756,6 +761,10 @@ def AlphaTrend():
                 bekle(1)
                 telegramBotSendText(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}", telegramId)
                 print(f"{coin1.coin} {giris} fiyatından SHORT işlem açıldı, Güncel USDT Bakiyeniz = {guncelbakiye}")
+                if karAl(pnlYuzdeHesaplama(kontrol,pnl)) is True:
+                    coin1.emirIptal()
+                elif eklemeYap(pnlYuzdeHesaplama(kontrol, pnl)) is True:
+                    coin1.longAc()
         elif float(kontrol) > 0:
             if islemTipi == "long":
                 if alphaTrend(close,low,high,volume) is False:

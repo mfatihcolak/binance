@@ -303,3 +303,17 @@ def crossOver(a,b):
     else:
         return False
 
+
+def pnlYuzdeHesaplama(entryPrice, pnl):
+    pnlYuzde = (100 * pnl) / entryPrice
+    pnlYuzde = float(pnlYuzde)
+    return pnlYuzde
+
+def eklemeYap(pnl):
+    if -pnl > 90.0:
+        return True
+
+def karAl(pnl):
+    if pnl > 10.0:
+        return True
+
